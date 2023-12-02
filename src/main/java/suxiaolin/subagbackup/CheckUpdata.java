@@ -9,7 +9,7 @@ import org.bukkit.Bukkit;
 public class CheckUpdata {
     public static void CheckUpdates(String version) {
         try {
-            URL url = new URL("https://api.github.com/repos/suxiaolinya/checkupdatasuBlockMonster/releases/latest");
+            URL url = new URL("https://api.github.com/repos/suxiaolinya/checkupdatasuBagBackUp/releases/latest");
             Scanner scanner = new Scanner(url.openStream(), "UTF-8").useDelimiter("\\A");
             String json = scanner.hasNext()? scanner.next() : "";
             scanner.close();
