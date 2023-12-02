@@ -1,0 +1,16 @@
+name: suBagBackup
+version: '${project.version}'
+main: suxiaolin.subagbackup.SuBagBackup
+api-version: '1.13'
+authors: [suxiaolin]
+description: bag backup
+commands:
+  bbu:
+    description: basic command
+    usage: /<command>
+    permission: subagbackup.op
+    permission-message: You don't have permission to use this command!
+permissions:
+  subagbackup.op:
+    description: permission of op
+    default: op

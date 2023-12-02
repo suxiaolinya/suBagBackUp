@@ -1,0 +1,15 @@
+#检查更新
+checkupdata: true
+#每个玩家最大备份数量
+maxbackup: 3
+#备份时间间隔（单位小时）
+backuptime: 1
+#MYSQL数据库配置
+MYSQL:
+  use: false
+  host: 127.0.0.1
+  port: 3306
+  database:
+  username: root
+  password:
+
