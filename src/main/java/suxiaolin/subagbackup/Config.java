@@ -23,6 +23,7 @@ public class Config {
         config = this.plugin.getConfig();
         config1 = this;
         LoadConfigFile();
+        LoadPlayerConfig();
     }
 
     public void LoadConfigFile() {

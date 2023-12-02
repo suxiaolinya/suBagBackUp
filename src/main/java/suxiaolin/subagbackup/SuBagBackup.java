@@ -13,8 +13,6 @@ public final class SuBagBackup extends JavaPlugin {
         plugin = this;
         saveDefaultConfig();
         config = new Config(this);
-        config.LoadConfigFile();
-        config.LoadPlayerConfig();
         mysqluse = config.getMysqluse();
         int backuptime = getConfig().getInt("backuptime");
         new Command(this);

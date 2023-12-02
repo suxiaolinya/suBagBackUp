@@ -25,9 +25,8 @@ public class H2 {
                 // 如果数据表不存在，则创建数据表
                 String createTableSQL = "CREATE TABLE IF NOT EXISTS bagbackup (player_name VARCHAR(255) NOT NULL,time VERCHAR(255) NOT NULL,item_data TEXT NOT NULL)";
                 statement.executeUpdate(createTableSQL);
-                System.out.println("数据表 'bagbackup' 创建成功");
             } catch (SQLException e) {
-                System.out.println("数据表已经存在");
+                System.out.println("[suBagBackup]§2数据表已经存在");
             }
 
         } catch (ClassNotFoundException | SQLException e) {
@@ -64,9 +63,9 @@ public class H2 {
             // 执行 SQL 语句
             statement.executeUpdate();
 
-            Bukkit.getPlayer(sender).sendMessage("[suBagBackup]备份成功");
+            Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§2备份成功");
         }catch (SQLException e) {
-            Bukkit.getPlayer(sender).sendMessage("[suBagBackup]备份失败" + e.getMessage());
+            Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§4备份失败" + e.getMessage());
         }finally {
             // 关闭连接和 Statement
             try {
@@ -77,7 +76,7 @@ public class H2 {
                     connection.close();
                 }
             } catch (SQLException e) {
-                Bukkit.getConsoleSender().sendMessage("[suBagBackup]数据库断开连接失败!" + e.getMessage());
+                Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4数据库断开连接失败!" + e.getMessage());
             }
         }
     }

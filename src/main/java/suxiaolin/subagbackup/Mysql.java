@@ -26,7 +26,7 @@ public class Mysql {
             String url = "jdbc:mysql://" + Host + ":" + Port + "/" + Database;
             DriverManager.getConnection(url, Username, Password);
             createTableIfNotExists();
-            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§a连接数据库成功!");
+            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§2连接数据库成功!");
         } catch (SQLException | ClassNotFoundException e) {
             Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4连接数据库失败:" + e.getMessage());
         }
