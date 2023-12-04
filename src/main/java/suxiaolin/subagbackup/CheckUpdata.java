@@ -18,12 +18,12 @@ public class CheckUpdata {
 
             if (latestVersion != null && !latestVersion.equalsIgnoreCase(version)) {
                 // 有新版本可用，发送提示消息
-                Bukkit.getConsoleSender().sendMessage("[suBlockMonster]§4插件有新版本可用!v" + latestVersion);
+                Bukkit.getConsoleSender().sendMessage("[suBagBackUp]§4" + Config.config1.getLanguageConfig().getString("checkupdata_new") + latestVersion);
             }else{
-                Bukkit.getConsoleSender().sendMessage("[suBlockMonster]§2插件已是最新版本!");
+                Bukkit.getConsoleSender().sendMessage("[suBagBackUp]§2" + Config.config1.getLanguageConfig().getString("checkupdata_latest"));
             }
         } catch (IOException e) {
-            Bukkit.getConsoleSender().sendMessage("[suBlockMonster]§4检查更新时发生错误!！" + e.getMessage());
+            Bukkit.getConsoleSender().sendMessage("[suBagBackUp]§4" + Config.config1.getLanguageConfig().getString("checkupdata_error") + e.getMessage());
         }
     }
 }

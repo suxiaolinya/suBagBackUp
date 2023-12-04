@@ -21,12 +21,12 @@ public final class SuBagBackup extends JavaPlugin {
 
         new Metrics(this, 20427);
 
-        Bukkit.getConsoleSender().sendMessage("[SuBagBackup]§2插件已成功启用！");
-        Bukkit.getConsoleSender().sendMessage("[suBlockMonster]§2作者:suxiaolin Minecraft服务器技术讨论群:1065589696和585152425");
+        Bukkit.getConsoleSender().sendMessage("[SuBagBackup]§2" + Config.config1.getLanguageConfig().getString("onenable"));
 
         if (getConfig().getBoolean("checkupdata")) {
             CheckUpdata.CheckUpdates(pluginversion);
         }
+
         Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> new BackUp().BackUpAll(Bukkit.getConsoleSender().getName()), 0, backuptime*20*60*60);
     }
 
@@ -37,7 +37,7 @@ public final class SuBagBackup extends JavaPlugin {
     @Override
     public void onDisable() {
         Bukkit.getScheduler().cancelTasks(this);
-        Bukkit.getConsoleSender().sendMessage("[suBlockMonster]§4插件卸载成功！感谢使用!");
+        Bukkit.getConsoleSender().sendMessage("[suBagBackUp]§4" + Config.config1.getLanguageConfig().getString("ondisable"));
     }
 
 }

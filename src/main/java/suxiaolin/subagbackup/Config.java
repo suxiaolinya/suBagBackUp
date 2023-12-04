@@ -5,18 +5,21 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.Plugin;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 
 public class Config {
     private SuBagBackup plugin;
     public static Config config1;
     private FileConfiguration config;
-    private File PlayerConfigFile;
     private int maxbackup;
+    private File PlayerConfigFile;
     private YamlConfiguration PlayerConfig;
+    private YamlConfiguration LanguageConfig;
     private Boolean mysqluse;
+    private String language;
     public Config(SuBagBackup plugin) {
 
         this.plugin = plugin;
@@ -34,6 +37,10 @@ public class Config {
         String database = config.getString("MYSQL.database");
         maxbackup = config.getInt("maxbackup");
         mysqluse = config.getBoolean("MYSQL.use");
+        language = config.getString("language");
+
+        SaveLanguageConfig();
+        LoadLanguageConfig();
 
         if (mysqluse) {
             new Mysql().MysqlConnect(port, host, database, username, password);
@@ -57,12 +64,37 @@ public class Config {
             try {
                 PlayerConfigFile.createNewFile();
             }catch (IOException e) {
-                Bukkit.getConsoleSender().sendMessage("[suBagBackUp]§4创建配置文件player.yml失败");
+                Bukkit.getConsoleSender().sendMessage("[suBagBackUp]§4" + LanguageConfig.getString("create_playerconfig_error"));
             }
         }
         // 加载配置文件
         PlayerConfig = YamlConfiguration.loadConfiguration(PlayerConfigFile);
 
+    }
+
+    public void SaveLanguageConfig(){
+        String[] filelanguage = {"Language/en.yml", "Language/zh_CN.yml"};
+        String folderPath = "plugins/suBagBackup/Language";
+        File folder = new File(folderPath);
+        if (!folder.exists()){
+            folder.mkdir();
+        }
+        for (String s : filelanguage) {
+            InputStream inputStream = plugin.getResource(s);
+            File file = new File(plugin.getDataFolder(), s);
+            if (!file.exists()) {
+                try {
+                    Files.copy(inputStream, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                }catch (IOException e) {
+                    Bukkit.getConsoleSender().sendMessage("[suBagBackUp]§4Create languag econfig error. | 创建语言文件失败." + e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void LoadLanguageConfig(){
+        File LanguageConfigFile = new File(plugin.getDataFolder(), "Language/" + language + ".yml");
+        LanguageConfig = YamlConfiguration.loadConfiguration(LanguageConfigFile);
     }
 
     public void SavePlayerConfig(String PlayerName,String time, String sender){
@@ -72,7 +104,7 @@ public class Config {
             try {
                 PlayerConfig.save(PlayerConfigFile);
             }catch (IOException e) {
-                Bukkit.getPlayer(sender).sendMessage("[suBagBackUp]§4创建玩家数据失败" + e.getMessage());
+                Bukkit.getPlayer(sender).sendMessage("[suBagBackUp]§4" + LanguageConfig.getString("create_playerdata_error:") + e.getMessage());
             }
             LoadPlayerConfig();
         }
@@ -92,7 +124,7 @@ public class Config {
         try {
             PlayerConfig.save(PlayerConfigFile);
         }catch (IOException e) {
-            Bukkit.getPlayer(sender).sendMessage("[suBagBackUp]§4玩家备份时间列表保存失败");
+            Bukkit.getPlayer(sender).sendMessage("[suBagBackUp]§4" + LanguageConfig.getString("save_playerbackuptimelist_error"));
         }
         LoadPlayerConfig();
     }
@@ -104,7 +136,9 @@ public class Config {
     public FileConfiguration getConfig() {
         return config;
     }
-
+    public YamlConfiguration getLanguageConfig() {
+        return LanguageConfig;
+    }
     public YamlConfiguration getPlayerConfig() {
         return PlayerConfig;
     }

@@ -14,7 +14,7 @@ public class Command implements CommandExecutor {
     public boolean onCommand(CommandSender sender, org.bukkit.command.Command command, String label, String[] args) {
         if (command.getName().equalsIgnoreCase("bbu") && args.length > 0 && args[0].equalsIgnoreCase("reload")) {
             Config.config1.reLoadConfigFile();
-            sender.sendMessage("[suBagBackUp]§2配置文件已成功重载！");
+            sender.sendMessage("[suBagBackUp]§2" + Config.config1.getLanguageConfig().getString("reload_config"));
             return true;
         }
         if (command.getName().equalsIgnoreCase("bbu") && args.length > 0 && (Bukkit.getPlayer(args[0]) != null)) {

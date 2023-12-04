@@ -26,9 +26,9 @@ public class Mysql {
             String url = "jdbc:mysql://" + Host + ":" + Port + "/" + Database;
             DriverManager.getConnection(url, Username, Password);
             createTableIfNotExists();
-            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§2连接数据库成功!");
+            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§2" + Config.config1.getLanguageConfig().getString("connect_database_success"));
         } catch (SQLException | ClassNotFoundException e) {
-            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4连接数据库失败:" + e.getMessage());
+            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("connect_database_error") + e.getMessage());
         }
     }
     public void connect() {
@@ -36,7 +36,7 @@ public class Mysql {
             String url = "jdbc:mysql://" + Host + ":" + Port + "/" + Database;
             this.connection = DriverManager.getConnection(url, Username, Password);
         } catch (SQLException e) {
-            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4连接数据库失败:" + e.getMessage());
+            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("connect_database_error") + e.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public class Mysql {
                 connection.close();
                 connection = null;
             } catch (SQLException e) {
-                Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4创建数据表失败:" + e.getMessage());
+                Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("datatablealready_exists") + e.getMessage());
             }
         }
     }
@@ -68,9 +68,9 @@ public class Mysql {
                 statement.close();
                 connection.close();
                 connection = null;
-                Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§2保存数据成功!");
+                Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§2" + Config.config1.getLanguageConfig().getString("backup_success"));
             } catch (SQLException e) {
-                Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§4保存数据失败:" + e.getMessage());
+                Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("backup_failed") + e.getMessage());
             }
         }
     }
@@ -88,13 +88,13 @@ public class Mysql {
                     try{
                         String itemData = resultSet.getString("item_data");
                         Serialize.serialize.deserializePlayerInventory(playerName,itemData);
-                        Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§2恢复备份成功!");
+                        Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§2" + Config.config1.getLanguageConfig().getString("restore_backup_success"));
                     }catch (Exception e){
-                        Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§4恢复备份失败:" + e.getMessage());
+                        Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("restore_backup_error") + e.getMessage());
                     }
                 }
             } catch (SQLException e) {
-                Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§4恢复备份失败:" + e.getMessage());
+                Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("restore_backup_error") + e.getMessage());
             }finally {
                 try {
                     if (selectStatement != null) {
@@ -121,7 +121,7 @@ public class Mysql {
                 selectStatement.setString(2, time);
                 selectStatement.executeUpdate();
             }catch (SQLException e) {
-                Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4删除数据失败:" + e.getMessage());
+                Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("delete_extra_backup_error") + e.getMessage());
             }finally {
                 try {
                     if (selectStatement != null) {

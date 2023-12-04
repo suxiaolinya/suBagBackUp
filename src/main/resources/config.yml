@@ -1,10 +1,12 @@
-#检查更新
+#检查更新 | Check for updates.
 checkupdata: true
-#每个玩家最大备份数量
+#语言 (en或者zh_CN) | Language (en or zh_CN)
+language: en
+#每个玩家最大备份数量 | Max backup number for each player.
 maxbackup: 3
-#备份时间间隔（单位小时）
+#备份时间间隔（单位小时） | Backup interval (unit: hour).
 backuptime: 1
-#MYSQL数据库配置
+#MYSQL数据库配置 | MYSQL database configuration.
 MYSQL:
   use: false
   host: 127.0.0.1
