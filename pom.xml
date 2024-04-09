@@ -6,7 +6,7 @@
 
     <groupId>suxiaolin</groupId>
     <artifactId>suBagBackup</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <packaging>jar</packaging>
 
     <name>suBagBackup</name>
@@ -84,7 +84,7 @@
         <dependency>
             <groupId>de.tr7zw</groupId>
             <artifactId>item-nbt-api</artifactId>
-            <version>2.12.1</version>
+            <version>2.12.3</version>
         </dependency>
         <dependency>
             <groupId>org.xerial</groupId>
