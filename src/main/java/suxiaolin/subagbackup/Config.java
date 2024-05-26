@@ -129,6 +129,56 @@ public class Config {
         LoadPlayerConfig();
     }
 
+    public void SavePlayerConfig(String PlayerName,String time){
+
+        if (PlayerConfig.getString(PlayerName) == null) {
+            PlayerConfig.createSection(PlayerName);
+            try {
+                PlayerConfig.save(PlayerConfigFile);
+            }catch (IOException e) {
+                Bukkit.getConsoleSender().sendMessage("[suBagBackUp]§4" + LanguageConfig.getString("create_playerdata_error:") + e.getMessage());
+            }
+            LoadPlayerConfig();
+        }
+        List<String> time1 = PlayerConfig.getStringList(PlayerName);
+
+        time1.add(time);
+        if(time1.size() > maxbackup){
+            String t = time1.get(0);
+            time1.remove(0);
+            if (mysqluse) {
+                new Mysql().DeleteData(PlayerName, t);
+            }else{
+                new H2().DeleteData(PlayerName, t);
+            }
+        }
+        PlayerConfig.set(PlayerName, time1);
+        try {
+            PlayerConfig.save(PlayerConfigFile);
+        }catch (IOException e) {
+            Bukkit.getConsoleSender().sendMessage("[suBagBackUp]§4" + LanguageConfig.getString("save_playerbackuptimelist_error"));
+        }
+        LoadPlayerConfig();
+    }
+
+    public void DeletePlayerConfig(String PlayerName, String time, String sender){
+        List<String> time1 = PlayerConfig.getStringList(PlayerName);
+        int index = 0;
+        for (String a : time1){
+            if (a.equals(time)){
+                time1.remove(index);
+                break;
+            }
+            index++;
+        }
+        PlayerConfig.set(PlayerName, time1);
+        try {
+            PlayerConfig.save(PlayerConfigFile);
+        }catch (IOException e) {
+            Bukkit.getPlayer(sender).sendMessage("[suBagBackUp]§4删除玩家数据列表失败." + LanguageConfig.getString("save_playerbackuptimelist_error"));
+        }
+        LoadPlayerConfig();
+    }
 
     public Boolean getMysqluse() {
         return mysqluse;

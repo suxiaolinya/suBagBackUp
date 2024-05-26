@@ -75,6 +75,26 @@ public class Mysql {
         }
     }
 
+    public void SaveItems(String playerName, String time, String itemData) {
+        connect();
+        if (this.connection == null) {
+            try {
+                String data = "INSERT INTO bagbackup (player_name,time,item_data) VALUES (?,?,?)";
+                PreparedStatement statement = this.connection.prepareStatement(data);
+                statement.setString(1, playerName);
+                statement.setString(2, time);
+                statement.setString(3, itemData);
+                statement.executeUpdate();
+                statement.close();
+                connection.close();
+                connection = null;
+                Bukkit.getConsoleSender().sendMessage("[suBagBackup]§2" + Config.config1.getLanguageConfig().getString("backup_success"));
+            } catch (SQLException e) {
+                Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("backup_failed") + e.getMessage());
+            }
+        }
+    }
+
     public void ReadSaveItems(Player playerName, String time, String sender) {
         connect();
         PreparedStatement selectStatement = null;
@@ -120,6 +140,34 @@ public class Mysql {
                 selectStatement.setString(1, playerName);
                 selectStatement.setString(2, time);
                 selectStatement.executeUpdate();
+            }catch (SQLException e) {
+                Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("delete_extra_backup_error") + e.getMessage());
+            }finally {
+                try {
+                    if (selectStatement != null) {
+                        selectStatement.close();
+                    }
+                    if (connection != null) {
+                        connection.close();
+                        connection = null;
+                    }
+                } catch (SQLException e) {
+                    Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + e.getMessage());
+                }
+            }
+        }
+    }
+
+    public void DeleteData(String playerName, String time) {
+        connect();
+        PreparedStatement selectStatement = null;
+        if (this.connection == null) {
+            try {
+                selectStatement = connection.prepareStatement("DELETE FROM bagbackup WHERE player_name = ? AND time = ?");
+                selectStatement.setString(1, playerName);
+                selectStatement.setString(2, time);
+                selectStatement.executeUpdate();
+                Bukkit.getConsoleSender().sendMessage("[suBagBackup]§2" + Config.config1.getLanguageConfig().getString("delete_backup_success"));
             }catch (SQLException e) {
                 Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("delete_extra_backup_error") + e.getMessage());
             }finally {

@@ -44,4 +44,23 @@ public class BackUp {
             str = "";
         }
     }
+
+    public void BackUpAll(){
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            // 获取当前系统时间
+            Date now = new Date();
+            // 创建日期格式化对象
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH:mm");
+            // 将日期格式化为指定格式的字符串
+            String time = sdf.format(now);
+            str = Serialize.serialize.serializePlayerInventory(player);
+            if (SuBagBackup.plugin.getmysqluse()) {
+                new Mysql().SaveItems(player.getName(), time, str);
+            }else{
+                new H2().SaveItems(player.getName(), time, str);
+            }
+            Config.config1.SavePlayerConfig(player.getName(), time);
+            str = "";
+        }
+    }
 }

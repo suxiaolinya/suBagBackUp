@@ -81,6 +81,41 @@ public class H2 {
         }
     }
 
+    public void SaveItems(String playerName, String time, String itemData){
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            // 连接到数据库（如果不存在则会自动创建）
+            connection = DriverManager.getConnection("jdbc:sqlite:./plugins/suBagBackup/bagbackup.db");
+
+            String data = "INSERT INTO bagbackup (player_name,time,item_data) VALUES (?,?,?)";
+            statement = connection.prepareStatement(data);
+            statement.setString(1, playerName);
+            statement.setString(2, time);
+            statement.setString(3, itemData);
+
+            // 执行 SQL 语句
+            statement.executeUpdate();
+
+            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§2" + Config.config1.getLanguageConfig().getString("backup_success"));
+        }catch (SQLException e) {
+            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("backup_failed") + e.getMessage());
+        }finally {
+            // 关闭连接和 Statement
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("disconnect_database_error") + e.getMessage());
+            }
+        }
+    }
+
     public void ReadSaveItems(Player playerName, String time, String sender) {
         Connection connection = null;
         PreparedStatement selectStatement = null;
@@ -128,6 +163,33 @@ public class H2 {
             deleteStatement.executeUpdate();
         } catch (SQLException e) {
             Bukkit.getPlayer(sender).sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("delete_extra_backup_error") + e.getMessage());
+        } finally {
+            try {
+                if (deleteStatement != null) {
+                    deleteStatement.close();
+                }
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (SQLException e) {
+                Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + e.getMessage());
+            }
+        }
+    }
+
+    public void DeleteData(String playerName, String time) {
+        Connection connection = null;
+        PreparedStatement deleteStatement = null;
+        try {
+            // 连接到数据库（如果不存在则会自动创建）
+            connection = DriverManager.getConnection("jdbc:sqlite:./plugins/suBagBackup/bagbackup.db");
+            deleteStatement = connection.prepareStatement("DELETE FROM bagbackup WHERE player_name = ? AND time = ?");
+            deleteStatement.setString(1, playerName);
+            deleteStatement.setString(2, time);
+            deleteStatement.executeUpdate();
+            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§2" + Config.config1.getLanguageConfig().getString("delete_backup_success"));
+        } catch (SQLException e) {
+            Bukkit.getConsoleSender().sendMessage("[suBagBackup]§4" + Config.config1.getLanguageConfig().getString("delete_extra_backup_error") + e.getMessage());
         } finally {
             try {
                 if (deleteStatement != null) {

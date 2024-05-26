@@ -27,7 +27,7 @@ public final class SuBagBackup extends JavaPlugin {
             CheckUpdata.CheckUpdates(pluginversion);
         }
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> new BackUp().BackUpAll(Bukkit.getConsoleSender().getName()), 0, backuptime*20*60*60);
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, () -> new BackUp().BackUpAll(), 0, backuptime*20*60*60);
     }
 
     public Boolean getmysqluse(){
